@@ -1,5 +1,7 @@
 Design assumptions:
 
+.NET version: 7.0
+
 Endpoints:
 .          [POST]
 simulate   [GET]
@@ -24,8 +26,6 @@ Design issues:
 - It might also be better to return properly formatted messages, with codes and the data in the body and in json format. I.e. IActionResult.
 - I did note that there is a delay, in starting each job, when the jobs list is large.
 - It would be nice to return some JSON rather then a list.
-
+- I don't think its fully async as the service should release the client then contact when its done running simulate. My design is a asynrous broker which allows multiple clients to communicate, with it, as the same time. However each client connection is not async.
 
 Considering it's my first time with .net I took advantage of ContosoPizza template. Please see the commit history as I have updated the readme as the project advanced.
-
-
