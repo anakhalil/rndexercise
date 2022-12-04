@@ -22,6 +22,8 @@ Design issues:
 - I know there are some issues with async / multi thread behavior. I needed to look into locking functions / variables to minimize these problems. I tried to mitigate unwanted behavior by copying the jobs list before using it.
 - simulate is accessible via the endpoint. It should really only be used via the broker. This is to aid in the unit testing and demonstrates the non-blocking behavior.
 - It might also be better to return properly formatted messages, with codes and the data in the body and in json format. I.e. IActionResult.
+- I did note that there is a delay, in starting each job, when the jobs list is large.
+- It would be nice to return some JSON rather then a list.
 
 
 Considering it's my first time with .net I took advantage of ContosoPizza template. Please see the commit history as I have updated the readme as the project advanced.
