@@ -89,15 +89,11 @@ public static class RunnerService{
             }
 
             // Adds each job to the task pool
-            // Task.Run(() => {
-            //     Simulate(job.Value); 
-            //     job.Done = true;
-            // });
-
-            var t = Task.Run(() => Simulate(job.Value));
-            // wait to simulate slow runner.
-            // processes each job one by one.
-            t.Wait();
+            // so every job can run simultaneously
+            Task.Run(() => {
+                Simulate(job.Value); 
+                job.Done = true;
+            });
 
             job.Done = true;
         }
