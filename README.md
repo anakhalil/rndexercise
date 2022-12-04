@@ -1,28 +1,29 @@
 Design assumptions:
 
 Endpoints:
-/start      -> submits job
-/progress   -> check on status of job runner
-/result     -> check if runner is done
+.          [POST]
+simulate   [GET]
+start      [GET]
+que        [GET]
+{id}       [GET]
+progress   [GET]
 
+Made some design changes compared to the first iteration. Now a job has a model and contains a state value. A collection of jobs can then be created and processed by the consumer. 
 
-Since the "job" is a dummy, simulate, function; I was unsure on what result to return. I assume it's the result of the runner itself.
+The endpoints have changed as well. You can post with an empty body to create a new job with random value (time to sleep). 
+Use the que endpoint to return all jobs in the queue or pass an id to return a specific job from the queue. Lastly, progress will return a summary of the job queue.
 
-The use of "start" and "progress" then were determined by whether I wanted to handle multiple job submissions. I went with a runner that can only handle one job as it was simpler.
+The Tests README has some instructions on how to run the code and use the endpoints.
 
-The api can be quired to see the state of the job (/progress) and its result (/result). If the api reports the runner is complete (using /result ) then a new submission can be made. This enforces that only one runner is active. The API can still be queried, but a new job submission will fail.
-
-/Result returns a value representing if the runner is working, rather than the completion of each job. Since it can only handle one job, we can consider the thread completion as a job completion. Note it will always return the result of the last run job.
-
-Progress is then the current state of the runner, rather than the number of completed vs uncompleted jobs.
-
-The start function is then used to try and submit a job to the runner.
 
 Design issues:
--Only one job submission
--simulate is accessible via the endpoint. It should really only be used via the broker. This is to aid in the unit testing and demonstrates the non-blocking behavior.
--It might also be better to return properly formatted messages, with codes and the data in the body and in json format. I.e. IActionResult.
+- I wanted to look into async functions more and considered not using tasks / threads but only one.
+- The Job model can be updated so that instead of a Value, it could have a generic command or Task. This would allow it to run any function and allow the jobs to be generic. I had issues getting this feature working.
+- I know there are some issues with async / multi thread behavior. I needed to look into locking functions / variables to minimize these problems. I tried to mitigate unwanted behavior by copying the jobs list before using it.
+- simulate is accessible via the endpoint. It should really only be used via the broker. This is to aid in the unit testing and demonstrates the non-blocking behavior.
+- It might also be better to return properly formatted messages, with codes and the data in the body and in json format. I.e. IActionResult.
 
 
-Considering it's my first time with .net I took advantage of ContosoPizza template.
+Considering it's my first time with .net I took advantage of ContosoPizza template. Please see the commit history as I have updated the readme as the project advanced.
+
 
