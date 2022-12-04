@@ -94,8 +94,6 @@ public static class RunnerService{
                 Simulate(job.Value); 
                 job.Done = true;
             });
-
-            job.Done = true;
         }
     }
 
